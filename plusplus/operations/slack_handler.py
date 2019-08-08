@@ -6,14 +6,14 @@ from plusplus.models import db, SlackTeam, Thing
 from plusplus import config
 import re
 
-user_exp = re.compile(r"<@([A-Za-z0-9]+)> *(\+\+|\-\-|==)")
+user_exp = re.compile(r"[^<]*<@([A-Za-z0-9]+)> *(\+\+|\-\-|==)")
 thing_exp = re.compile(r"#([A-Za-z0-9\.\-_@$!\*\(\)\,\?\/%\\\^&\[\]\{\"':; ]+)(\+\+|\-\-|==)")
 
 def process_incoming_message(event_data, req):
     # ignore retries
     if req.headers.get('X-Slack-Retry-Reason'):
         return "Status: OK"
-        
+
     event = event_data['event']
     subtype = event.get('subtype', '')
     # ignore bot messages
