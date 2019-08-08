@@ -24,9 +24,11 @@ def create_app():
     slack = SlackEventAdapter(app.config['SLACK_SIGNING_SECRET'], "/slack/events", app)
 
     # SQLAlchemy setup
+    db.init_app(app)
     from plusplus.models import SlackTeam
     from plusplus.models import Thing
-    db.init_app(app)
+    with app.app_context():
+        b.create_all()
 
     # blueprint setup
 
