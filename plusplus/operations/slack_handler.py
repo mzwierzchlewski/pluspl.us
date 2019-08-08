@@ -34,7 +34,7 @@ def process_incoming_message(event_data, req):
     team.update_last_access()
     db.session.add(team)
     db.session.commit()
-    print(message)
+    
     user_match = user_exp.match(message)
     thing_match = thing_exp.match(message)
     if user_match:
