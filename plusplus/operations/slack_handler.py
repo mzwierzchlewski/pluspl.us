@@ -31,8 +31,6 @@ def process_incoming_message(event_data, req):
 
     # load/update team
     team = SlackTeam.query.filter_by(id=event_data['team_id']).first()
-    if (team is None):
-        team = SlackTeam(req.json)
     team.update_last_access()
     db.session.add(team)
     db.session.commit()
