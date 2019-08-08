@@ -28,7 +28,7 @@ def create_app():
     from plusplus.models import SlackTeam
     from plusplus.models import Thing
     with app.app_context():
-        b.create_all()
+        db.create_all()
 
     # blueprint setup
 
