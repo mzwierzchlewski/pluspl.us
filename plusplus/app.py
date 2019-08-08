@@ -25,10 +25,6 @@ def create_app():
 
     # SQLAlchemy setup
     db.init_app(app)
-    from plusplus.models import SlackTeam
-    from plusplus.models import Thing
-    db.create_all()
-    db.session.commit()
 
     # blueprint setup
 
