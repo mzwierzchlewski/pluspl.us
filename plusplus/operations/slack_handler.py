@@ -13,7 +13,7 @@ def process_incoming_message(event_data, req):
     # ignore retries
     if req.headers.get('X-Slack-Retry-Reason'):
         return "Status: OK"
-
+    print(req)
     event = event_data['event']
     subtype = event.get('subtype', '')
     # ignore bot messages
