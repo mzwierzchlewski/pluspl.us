@@ -47,7 +47,7 @@ def process_incoming_message(event_data, req):
         message = update_points(thing, operation, is_self=user==found_user)
         team.slack_client().api_call(
             "chat.postMessage",
-            channel=channel,
+            channel='#karmawhores',
             text=message
         )
         print("Processed " + thing.item)
@@ -61,7 +61,7 @@ def process_incoming_message(event_data, req):
         message = update_points(thing, operation)
         team.slack_client().api_call(
             "chat.postMessage",
-            channel=channel,
+            channel='#karmawhores',
             text=message
         )
         print("Processed " + thing.item)

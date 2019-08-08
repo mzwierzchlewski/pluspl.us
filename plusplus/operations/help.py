@@ -8,11 +8,7 @@ def help_text(team):
                 "• *#(thing)--*: take points from a thing (e.g. #jake--)",
                 "• *#(thing)==*: get current point total of a thing (e.g. #jake==)",
                 "• *{ping} leaderboard*: get the current high scoring people and things",
-                "• *{ping} loserboard*: get the current low scoring people and things",
-                "• *{ping} leaderboard global*: get the current high scoring things across all teams",
-                "• *{ping} loserboard global*: get the current low scoring things across all teams",
-                "• *{ping} reset*: resets the local leaderboard to 0",
-                "• *{ping} feedback <feedback>*: send feedback about this bot to its wrangler"]
+                "• *{ping} loserboard*: get the current low scoring people and things"]
     formatted_commands = list()
     for command in commands:
         formatted_commands.append(command.format(ping=f"<@{team.bot_user_id}>"))
@@ -36,7 +32,7 @@ def help_text(team):
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"Still need help? Send us an email at {config.SUPPORT_EMAIL}!"
+                "text": f"Still need help? Pierdol się!"
             }
         }
     ]
