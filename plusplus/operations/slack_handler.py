@@ -7,6 +7,7 @@ from plusplus import config
 import re
 
 user_exp = re.compile(r"[^<]*<@([A-Za-z0-9]+)> *(\+\+|\-\-|==)")
+user_chuj_exp = re.compile(r"^<@([A-Za-z0-9]+)> chuj$")
 thing_exp = re.compile(r"#([A-Za-z0-9\.\-_@$!\*\(\)\,\?\/%\\\^&\[\]\{\"':; ]+)(\+\+|\-\-|==)")
 
 def process_incoming_message(event_data, req):
@@ -36,11 +37,25 @@ def process_incoming_message(event_data, req):
     db.session.commit()
     
     user_match = user_exp.match(message)
+    user_chuj_match = user_chuj_exp.match(message)
     thing_match = thing_exp.match(message)
     if user_match:
         # handle user point operations
         found_user = user_match.groups()[0].strip()
         operation = user_match.groups()[1].strip()
+        thing = Thing.query.filter_by(item=found_user.lower(), team=team).first()
+        if not thing:
+            thing = Thing(item=found_user.lower(), points=0, user=True, team_id=team.id)
+        message = update_points(thing, operation, is_self=user==found_user)
+        team.slack_client().api_call(
+            "chat.postMessage",
+            channel='#karmawhores',
+            text=message
+        )
+        print("Processed " + thing.item)
+    elif user_chuj_match:
+        found_user = user_match.groups()[0].strip()
+        operation = "--"
         thing = Thing.query.filter_by(item=found_user.lower(), team=team).first()
         if not thing:
             thing = Thing(item=found_user.lower(), points=0, user=True, team_id=team.id)
