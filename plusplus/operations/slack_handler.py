@@ -54,7 +54,7 @@ def process_incoming_message(event_data, req):
         )
         print("Processed " + thing.item)
     elif user_chuj_match:
-        found_user = user_match.groups()[0].strip()
+        found_user = user_chuj_match.groups()[0].strip()
         operation = "--"
         thing = Thing.query.filter_by(item=found_user.lower(), team=team).first()
         if not thing:
