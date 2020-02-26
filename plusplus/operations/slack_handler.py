@@ -128,6 +128,8 @@ def process_incoming_message(event_data, req):
         things = Thing.query.all()
         for thing in things:
             thing.reset_last_week()
+            db.session.add(thing)
+        db.session.commit()
         print("Processed shapreset for team " + team.id)
 
     return "OK", 200
