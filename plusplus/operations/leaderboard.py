@@ -52,7 +52,7 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                                   "type": "mrkdwn",
                                   "text": "*Users*\n" + numbered_users
                               })
-        if (len(users) > 0):
+        if (users.count() > 0):
             body['fields'].append({
                                     "type": "mrkdwn",
                                     "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz: - " + f"<@{users[0].item.upper()}>\n"
