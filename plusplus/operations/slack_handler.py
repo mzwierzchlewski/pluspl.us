@@ -20,7 +20,7 @@ def process_incoming_message(event_data, req):
     # ignore bot messages
     message = event.get('text').lower()
 
-    if (message != "sn4psh0t" and message != "sn4pr3s3t") and subtype == 'bot_message':
+    if (message != "sn4psh0t" and message != "sn44psh0t" and message != "sn4pr3s3t") and subtype == 'bot_message':
         return "Status: OK"
 
     # ignore edited messages
@@ -118,6 +118,13 @@ def process_incoming_message(event_data, req):
             blocks=generate_reset_block()
         )
     elif "sn4psh0t" in message and team.bot_user_id.lower() in message:
+        team.slack_client().api_call(
+            "chat.postMessage",
+            channel='#karmawhores',
+            blocks=generate_leaderboard(team=team, snapshot=True)
+        )
+        print("Processed shapshot for team " + team.id)
+    elif "sn44psh0t" in message and team.bot_user_id.lower() in message:
         team.slack_client().api_call(
             "chat.postMessage",
             channel=channel,
