@@ -49,6 +49,7 @@ class Thing(db.Model):
     team_id = db.Column(db.String, db.ForeignKey('SlackTeam.id'))
     show_in_global_leaderboard = db.Column(db.Boolean, default=True)
     last_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    last_week_points = db.Column(db.Integer, default=0)
 
     def increment(self):
         self.points += 1
@@ -57,3 +58,6 @@ class Thing(db.Model):
     def decrement(self):
         self.points -= 1
         self.last_modified = datetime.datetime.utcnow()
+
+    def reset_last_week(self):
+        self.last_week_points = self.points

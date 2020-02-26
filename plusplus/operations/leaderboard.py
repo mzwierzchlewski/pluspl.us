@@ -2,25 +2,32 @@ from ..models import Thing
 import json
 
 
-def generate_leaderboard(team=None, losers=False, global_leaderboard=False):
+def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snapshot=False):
     if losers:
         ordering = Thing.points.asc()
         header = "Here's the current loserboard:"
     else:
         ordering = Thing.points.desc()
         header = "Here's the current leaderboard:"
+    
+    if snapshot:
+        header = "Current week standings:"
 
     # filter args
     user_args = {"user": True}
     thing_args = {"user": False}
-    if not global_leaderboard:
-        user_args['team'] = team
-        thing_args['team'] = team
-        users = Thing.query.filter_by(**user_args).order_by(ordering).limit(10)
+    if snapshot:
+        users = Thing.query.filter_by(**user_args).order_by(Thing.points.asc())
+        things =  Thing.query.filter_by(**thing_args).order_by(Thing.points.asc())
+    else:
+        if not global_leaderboard:
+            user_args['team'] = team
+            thing_args['team'] = team
+            users = Thing.query.filter_by(**user_args).order_by(ordering).limit(10)
 
-    things = Thing.query.filter_by(**thing_args).order_by(ordering).limit(10)
+        things = Thing.query.filter_by(**thing_args).order_by(ordering).limit(10)
 
-    formatted_things = [f"{thing.item} ({thing.points})" for thing in things]
+    formatted_things = [f"{thing.item} ({thing.points})" for thing in things] if not snapshot else [f"{thing.item} ({thing.points - thing.last_week_points})" for thing in things]
     numbered_things = generate_numbered_list(formatted_things)
     leaderboard_header = {"type": "section",
                           "text":
@@ -39,7 +46,7 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False):
         }
 
     if not global_leaderboard:
-        formatted_users = [f"<@{user.item.upper()}> ({user.points})" for user in users]
+        formatted_users = [f"<@{user.item.upper()}> ({user.points})" for user in users] if not snapshot else [f"{user.item} ({user.points - user.last_week_points})" for user in users]
         numbered_users = generate_numbered_list(formatted_users)
         body['fields'].append({
                                   "type": "mrkdwn",

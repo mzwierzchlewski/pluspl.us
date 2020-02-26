@@ -1,5 +1,5 @@
 from plusplus.operations.points import update_points, generate_string
-from plusplus.operations.leaderboard import generate_leaderboard
+from plusplus.operations.leaderboard import generate_leaderboard, generate_numbered_list
 from plusplus.operations.help import help_text
 from plusplus.operations.reset import generate_reset_block
 from plusplus.models import db, SlackTeam, Thing
@@ -18,14 +18,15 @@ def process_incoming_message(event_data, req):
     event = event_data['event']
     subtype = event.get('subtype', '')
     # ignore bot messages
-    if subtype == 'bot_message':
+    message = event.get('text').lower()
+
+    if (message != "snapshot" and message != "snapreset") and subtype == 'bot_message':
         return "Status: OK"
 
     # ignore edited messages
     if subtype == 'message_changed':
         return "Status: OK"
 
-    message = event.get('text').lower()
     user = event.get('user').lower()
     channel = event.get('channel')
     channel_type = event.get('channel_type')
@@ -116,4 +117,17 @@ def process_incoming_message(event_data, req):
             channel=channel,
             blocks=generate_reset_block()
         )
+    elif "snapshot" in message and team.bot_user_id.lower() in message:
+        team.slack_client().api_call(
+            "chat.postMessage",
+            channel=channel,
+            blocks=generate_leaderboard(team=team, snapshot=True)
+        )
+        print("Processed shapshot for team " + team.id)
+    elif "snapreset" in message and team.bot_user_id.lower() in message:
+        things = Thing.query.all()
+        for thing in things:
+            thing.reset_last_week()
+        print("Processed shapreset for team " + team.id)
+
     return "OK", 200
