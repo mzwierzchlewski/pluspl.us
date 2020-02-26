@@ -27,7 +27,7 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
 
         things = Thing.query.filter_by(**thing_args).order_by(ordering).limit(10)
 
-    formatted_things = [f"{thing.item} ({thing.points})" for thing in things] if not snapshot else [f"{thing.item} ({thing.points - thing.last_week_points})" if for thing in filter(lambda t: t.points - t.last_week.points != 0, things) ]
+    formatted_things = [f"{thing.item} ({thing.points})" for thing in things] if not snapshot else [f"{thing.item} ({thing.points - thing.last_week_points})" for thing in filter(lambda t: t.points - t.last_week.points != 0, things) ]
     numbered_things = generate_numbered_list(formatted_things)
     leaderboard_header = {"type": "section",
                           "text":
