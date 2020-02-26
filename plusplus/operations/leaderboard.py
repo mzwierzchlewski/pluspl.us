@@ -11,7 +11,7 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
         header = "Here's the current leaderboard:"
     
     if snapshot:
-        header = "Current week standings:"
+        header = "Last week standings:"
 
     # filter args
     user_args = {"user": True}
@@ -52,6 +52,15 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                                   "type": "mrkdwn",
                                   "text": "*Users*\n" + numbered_users
                               })
+        if (len(users) > 0):
+            body['fields'].append({
+                                    "type": "mrkdwn",
+                                    "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz: - " + f"<@{users[0].item.upper()}>\n"
+                                })
+            body['fields'].append({
+                                    "type": "mrkdwn",
+                                    "text": ":tn: :rak2: :zjebparrot: *Chujokotlarz* :zjebparrot: :rak2: :tn: - " + f"<@{users[-1].item.upper()}>"
+                                })
     leaderboard = [leaderboard_header, body]
     return json.dumps(leaderboard)
 
