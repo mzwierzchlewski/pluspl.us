@@ -56,12 +56,15 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                               })
         if (len(filtered_users) > 0):
             body['fields'].append({
-                                    "type": "mrkdwn",
-                                    "text": "\n:turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz:" + f"<@{filtered_users[0].item.upper()}>\n"
+                                    "type": "divider"
                                 })
             body['fields'].append({
                                     "type": "mrkdwn",
-                                    "text": "\n:tn: :rak2: :zjebparrot: *Chujokotlarz* :zjebparrot: :rak2: :tn:" + f"<@{filtered_users[-1].item.upper()}>"
+                                    "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz:\n" + f"<@{filtered_users[0].item.upper()}>\n"
+                                })
+            body['fields'].append({
+                                    "type": "mrkdwn",
+                                    "text": ":tn: :rak2: :zjebparrot: *Chujokotlarz* :zjebparrot: :rak2: :tn:\n" + f"<@{filtered_users[-1].item.upper()}>"
                                 })
     leaderboard = [leaderboard_header, body]
     return json.dumps(leaderboard)
