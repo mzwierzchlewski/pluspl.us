@@ -45,21 +45,23 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                 ]
         }
 
+    filtered_users = list(filter(lambda u: u.points - u.last_week_points != 0, users))
+
     if not global_leaderboard:
-        formatted_users = [f"<@{user.item.upper()}> ({user.points})" for user in users] if not snapshot else [f"<@{user.item.upper()}> ({user.points - user.last_week_points})" for user in filter(lambda u: u.points - u.last_week_points != 0, users)]
+        formatted_users = [f"<@{user.item.upper()}> ({user.points})" for user in users] if not snapshot else [f"<@{user.item.upper()}> ({user.points - user.last_week_points})" for user in filtered_users]
         numbered_users = generate_numbered_list(formatted_users)
         body['fields'].append({
                                   "type": "mrkdwn",
                                   "text": "*Users*\n" + numbered_users
                               })
-        if (users.count() > 0):
+        if (len(filtered_users) > 0):
             body['fields'].append({
                                     "type": "mrkdwn",
-                                    "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz: - " + f"<@{users[0].item.upper()}>\n"
+                                    "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz: - " + f"<@{filtered_users[0].item.upper()}>\n"
                                 })
             body['fields'].append({
                                     "type": "mrkdwn",
-                                    "text": ":tn: :rak2: :zjebparrot: *Chujokotlarz* :zjebparrot: :rak2: :tn: - " + f"<@{users[-1].item.upper()}>"
+                                    "text": ":tn: :rak2: :zjebparrot: *Chujokotlarz* :zjebparrot: :rak2: :tn: - " + f"<@{filtered_users[-1].item.upper()}>"
                                 })
     leaderboard = [leaderboard_header, body]
     return json.dumps(leaderboard)
