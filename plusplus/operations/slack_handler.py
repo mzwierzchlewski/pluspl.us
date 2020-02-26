@@ -20,7 +20,7 @@ def process_incoming_message(event_data, req):
     # ignore bot messages
     message = event.get('text').lower()
 
-    if (message != "snapshot" and message != "snapreset") and subtype == 'bot_message':
+    if (message != "sn4psh0t" and message != "sn4pr3s3t") and subtype == 'bot_message':
         return "Status: OK"
 
     # ignore edited messages
@@ -117,14 +117,14 @@ def process_incoming_message(event_data, req):
             channel=channel,
             blocks=generate_reset_block()
         )
-    elif "snapshot" in message and team.bot_user_id.lower() in message:
+    elif "sn4psh0t" in message and team.bot_user_id.lower() in message:
         team.slack_client().api_call(
             "chat.postMessage",
             channel=channel,
             blocks=generate_leaderboard(team=team, snapshot=True)
         )
         print("Processed shapshot for team " + team.id)
-    elif "snapreset" in message and team.bot_user_id.lower() in message:
+    elif "sn4pr3s3t" in message and team.bot_user_id.lower() in message:
         things = Thing.query.all()
         for thing in things:
             thing.reset_last_week()
