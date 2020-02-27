@@ -72,8 +72,9 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                     "text": ":tn: :rak2: :zjebparrot: *Chujokotlarz* :zjebparrot: :rak2: :tn:\n" + f"<@{filtered_users[-1].item.upper()}>"
                 }
             }
+            leaderboard = [leaderboard_header, body, divider, turbo, divider, chujo]
 
-    leaderboard = [leaderboard_header, body, divider, turbo, divider, chujo]
+    leaderboard = [leaderboard_header, body]
     return json.dumps(leaderboard)
 
 
