@@ -62,7 +62,7 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz: - " + f"<@{filtered_users[0].item.upper()}>"
+                    "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz:\n" + f"<@{filtered_users[0].item.upper()}>"
                 }
             }
             chujo = {
