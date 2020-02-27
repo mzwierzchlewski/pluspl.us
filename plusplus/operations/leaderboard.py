@@ -73,6 +73,7 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                 }
             }
             leaderboard = [leaderboard_header, body, divider, turbo, divider, chujo]
+            return json.dumps(leaderboard)
 
     leaderboard = [leaderboard_header, body]
     return json.dumps(leaderboard)
