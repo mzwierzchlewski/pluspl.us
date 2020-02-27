@@ -50,6 +50,8 @@ class Thing(db.Model):
     show_in_global_leaderboard = db.Column(db.Boolean, default=True)
     last_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     last_week_points = db.Column(db.Integer, default=0)
+    turbo = db.Column(db.Boolean)
+    chujo = db.Column(db.Boolean)
 
     def increment(self):
         self.points += 1
@@ -61,3 +63,7 @@ class Thing(db.Model):
 
     def reset_last_week(self):
         self.last_week_points = self.points
+
+    def reset_status(self):
+        self.turbo = False
+        self.chujo = False

@@ -45,16 +45,16 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                 ]
         }
 
-    filtered_users = list(filter(lambda u: u.points - u.last_week_points != 0, users))
+    filtered_users = sorted(list(filter(lambda u: u.points - u.last_week_points != 0, users)), key=lambda u: u.points - u.last_week_points)
 
     if not global_leaderboard:
-        formatted_users = [f"<@{user.item.upper()}> ({user.points})" for user in users] if not snapshot else [f"<@{user.item.upper()}> ({user.points - user.last_week_points})" for user in filtered_users]
+        formatted_users = [f"<@{user.item.upper()}> ({user.points}) {":turbokotlarz:" if user.turbo} {":rak2:" if user.chujo}" for user in users] if not snapshot else [f"<@{user.item.upper()}> ({user.points - user.last_week_points})" for user in filtered_users]
         numbered_users = generate_numbered_list(formatted_users)
         body['fields'].append({
                                   "type": "mrkdwn",
                                   "text": "*Users*\n" + numbered_users
                               })
-        if (len(filtered_users) > 0):
+        if (snapshot and len(filtered_users) > 0):
             divider = {
 			    "type": "divider"
 		    }

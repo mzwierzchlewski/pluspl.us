@@ -132,6 +132,21 @@ def process_incoming_message(event_data, req):
         )
         print("Processed shapshot for team " + team.id)
     elif "sn4pr3s3t" in message and team.bot_user_id.lower() in message:
+        user_args = {"user": True}
+        users = Thing.query.filter_by(**user_args)
+        for user in users:
+            user.reset_status()
+            db.session.add(user)
+        db.session.commit()
+        
+        filtered_users = sorted(list(filter(lambda u: u.points - u.last_week_points != 0, users)), key=lambda u: u.points - u.last_week_points)
+        if len(filtered_users) > 0:
+            filtered_users[0].turbo = True
+            db.session.add(filtered_users[0])
+            filtered_users[-1].chujo = True
+            db.session.add(filtered_users[1])
+            db.session.commit()
+
         things = Thing.query.all()
         for thing in things:
             thing.reset_last_week()
