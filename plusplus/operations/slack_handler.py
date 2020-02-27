@@ -144,7 +144,7 @@ def process_incoming_message(event_data, req):
             filtered_users[0].turbo = True
             db.session.add(filtered_users[0])
             filtered_users[-1].chujo = True
-            db.session.add(filtered_users[1])
+            db.session.add(filtered_users[-1])
             db.session.commit()
 
         things = Thing.query.all()
