@@ -18,7 +18,10 @@ def process_incoming_message(event_data, req):
     event = event_data['event']
     subtype = event.get('subtype', '')
     # ignore bot messages
-    message = event.get('text').lower()
+    text = event.get('text')
+    if text is None:
+        return "Status: OK"
+    message = text.lower()
 
     if (message != "sn4psh0t" and message != "sn44psh0t" and message != "sn4pr3s3t") and subtype == 'bot_message':
         return "Status: OK"
