@@ -55,18 +55,25 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
                                   "text": "*Users*\n" + numbered_users
                               })
         if (len(filtered_users) > 0):
-            body['fields'].append({
-                                    "type": "divider"
-                                })
-            body['fields'].append({
-                                    "type": "mrkdwn",
-                                    "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz:\n" + f"<@{filtered_users[0].item.upper()}>\n"
-                                })
-            body['fields'].append({
-                                    "type": "mrkdwn",
-                                    "text": ":tn: :rak2: :zjebparrot: *Chujokotlarz* :zjebparrot: :rak2: :tn:\n" + f"<@{filtered_users[-1].item.upper()}>"
-                                })
-    leaderboard = [leaderboard_header, body]
+            divider = {
+			    "type": "divider"
+		    }
+            turbo = {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": ":turbokotlarz: :turbokotlarz: :turbokotlarz: *Turbokotlarz* :turbokotlarz: :turbokotlarz: :turbokotlarz: - " + f"<@{filtered_users[0].item.upper()}>"
+                }
+            }
+            chujo = {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": ":tn: :rak2: :zjebparrot: *Chujokotlarz* :zjebparrot: :rak2: :tn:\n" + f"<@{filtered_users[-1].item.upper()}>"
+                }
+            }
+
+    leaderboard = [leaderboard_header, body, divider, turbo, divider, chujo]
     return json.dumps(leaderboard)
 
 
