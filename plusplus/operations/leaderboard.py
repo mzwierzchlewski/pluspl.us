@@ -11,14 +11,15 @@ def generate_leaderboard(team=None, losers=False, global_leaderboard=False, snap
         header = "Here's the current leaderboard:"
     
     if snapshot:
+        ordering = Thing.points.desc()
         header = "Last week standings:"
 
     # filter args
     user_args = {"user": True}
     thing_args = {"user": False}
     if snapshot:
-        users = Thing.query.filter_by(**user_args).order_by(Thing.points.asc())
-        things =  Thing.query.filter_by(**thing_args).order_by(Thing.points.asc())
+        users = Thing.query.filter_by(**user_args).order_by(Thing.points.desc())
+        things =  Thing.query.filter_by(**thing_args).order_by(Thing.points.desc())
     else:
         if not global_leaderboard:
             user_args['team'] = team

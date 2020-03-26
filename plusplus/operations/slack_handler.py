@@ -142,13 +142,17 @@ def process_incoming_message(event_data, req):
             db.session.add(user)
         db.session.commit()
         
-        filtered_users = sorted(list(filter(lambda u: u.points - u.last_week_points != 0, users)), key=lambda u: u.points - u.last_week_points)
+        filtered_positive_users = sorted(list(filter(lambda u: u.points - u.last_week_points > 0, users)), key=lambda u: 0-(u.points - u.last_week_points))
         if len(filtered_users) > 0:
             filtered_users[0].turbo = True
             db.session.add(filtered_users[0])
-            filtered_users[-1].chujo = True
-            db.session.add(filtered_users[-1])
-            db.session.commit()
+
+        filtered_negative_users = sorted(list(filter(lambda u: u.points - u.last_week_points <= 0, users)), key=lambda u: u.points - u.last_week_points)
+        for user in filtered_negative_users:
+            user.chujo = True
+            db.session.add(user)
+            
+        db.session.commit()
 
         things = Thing.query.all()
         for thing in things:
